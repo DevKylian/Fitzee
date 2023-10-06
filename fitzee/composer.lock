@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d67f7659247369c4194aac4749fbc487",
+    "content-hash": "018d9c3a36576fcbd9e60b5cb5f17814",
     "packages": [
         {
             "name": "brick/math",
@@ -60,6 +60,49 @@
                 }
             ],
             "time": "2023-01-15T23:15:59+00:00"
+        },
+        {
+            "name": "devkylian/laravel-uuid",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DevKylian/laravel-uuid.git",
+                "reference": "3a0e24c37e6ccfd57429e64fcc55d3192b4685ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DevKylian/laravel-uuid/zipball/3a0e24c37e6ccfd57429e64fcc55d3192b4685ff",
+                "reference": "3a0e24c37e6ccfd57429e64fcc55d3192b4685ff",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^6|^7|^8|^9|^10",
+                "illuminate/support": "^6|^7|^8|^9|^10",
+                "php": "^7.4|^8.2"
+            },
+            "default-branch": true,
+            "type": "plugin",
+            "autoload": {
+                "psr-4": {
+                    "DevKylian\\Uuid\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kylian Dev",
+                    "email": "contact@kyliandev.fr"
+                }
+            ],
+            "description": "Eloquent UUID Trait for Laravel 6 and above.",
+            "support": {
+                "issues": "https://github.com/DevKylian/laravel-uuid/issues",
+                "source": "https://github.com/DevKylian/laravel-uuid/tree/master"
+            },
+            "time": "2023-10-06T18:59:09+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -8266,7 +8309,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "devkylian/laravel-uuid": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
