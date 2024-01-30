@@ -1,77 +1,118 @@
-<script setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue';
 
-const props = defineProps({
-    align: {
-        type: String,
-        default: 'right',
-    },
-    width: {
-        type: String,
-        default: '48',
-    },
-    contentClasses: {
-        type: String,
-        default: 'py-1 bg-white',
-    },
-});
+<script>
+import { ref, watch, defineProps, defineEmits } from 'vue';
 
-const closeOnEscape = (e) => {
-    if (open.value && e.key === 'Escape') {
-        open.value = false;
-    }
-};
+export default {
+  props: {
+    label: String,
+    name: String,
+    value: String,
+    options: Array,
+    errors: Object,
+  },
+  setup(props, { emit }) {
+    const inputValue = ref(props.value || '');
+    const inputId = props.name;
+    const hasError = ref(false);
+    const errorMessage = ref('');
 
-onMounted(() => document.addEventListener('keydown', closeOnEscape));
-onUnmounted(() => document.removeEventListener('keydown', closeOnEscape));
+    const onInput = () => {
+      emit('updateEvent', inputValue.value);
+    };
 
-const widthClass = computed(() => {
+    watch(
+      () => props.errors && props.errors[inputId],
+      (error) => {
+        hasError.value = !!error;
+        errorMessage.value = error || '';
+      }
+    );
+
     return {
-        48: 'w-48',
-    }[props.width.toString()];
-});
-
-const alignmentClasses = computed(() => {
-    if (props.align === 'left') {
-        return 'origin-top-left left-0';
-    } else if (props.align === 'right') {
-        return 'origin-top-right right-0';
-    } else {
-        return 'origin-top';
-    }
-});
-
-const open = ref(false);
+      inputValue,
+      inputId,
+      onInput,
+      hasError,
+      errorMessage,
+    };
+  },
+};
 </script>
-
 <template>
-    <div class="relative">
-        <div @click="open = !open">
-            <slot name="trigger" />
-        </div>
-
-        <!-- Full Screen Dropdown Overlay -->
-        <div v-show="open" class="fixed inset-0 z-40" @click="open = false"></div>
-
-        <Transition
-            enter-active-class="transition ease-out duration-200"
-            enter-from-class="opacity-0 scale-95"
-            enter-to-class="opacity-100 scale-100"
-            leave-active-class="transition ease-in duration-75"
-            leave-from-class="opacity-100 scale-100"
-            leave-to-class="opacity-0 scale-95"
-        >
-            <div
-                v-show="open"
-                class="absolute z-50 mt-2 rounded-md shadow-lg"
-                :class="[widthClass, alignmentClasses]"
-                style="display: none"
-                @click="open = false"
-            >
-                <div class="rounded-md ring-1 ring-black ring-opacity-5" :class="contentClasses">
-                    <slot name="content" />
-                </div>
-            </div>
-        </Transition>
+  <div class="input__group">
+    <label class="input__label" :for="inputId" v-if="label">{{ label }}</label>
+    <div class="input__container">
+      <select
+        class="input__input"
+        :class="{ error: hasError }"
+        :id="inputId"
+        :name="name"
+        v-model="inputValue"
+        @change="onInput"
+      >
+        <option
+          v-for="(option, index) in options"
+          :key="index"
+          :value="option.value"
+        >{{ option.text }}</option>
+      </select>
+      <svg class="input__icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="#000000"><path d="M24 24H0V0h24v24z" fill="none"/><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"/></svg>
     </div>
+    <span class="error__label" v-if="hasError">{{ errorMessage }}</span>
+  </div>
 </template>
+
+<style scoped lang="scss">
+@import '../../scss/colors.scss';
+@import '../../scss/error.scss';
+
+.input__group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input__label {
+  position: absolute;
+  top: 0;
+  font-size: 1rem;
+  color: $color-white;
+  font-weight: bold;
+}
+
+.input__container {
+    margin-top: 30px;
+  position: relative;
+}
+
+
+.input__input {
+  border-radius: 15px;
+  box-sizing: border-box;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.00) 0%,
+    rgba(255, 255, 255, 0.10) 100%
+  ),
+  rgba(39, 41, 48, 0.40);
+  border: none;
+  padding: 12px 12px;
+  color: $color-grey;
+  cursor: pointer;
+  width: 100%;
+}
+
+.input__icon {
+    position: absolute;
+    right: 10px;
+    top: 25%;
+    width: 24px;
+    height: 24px;
+    fill: $color-grey;
+}
+
+.input__input:hover,
+.input__input:active,
+.input__input:focus {
+  box-shadow: none;
+}
+</style>

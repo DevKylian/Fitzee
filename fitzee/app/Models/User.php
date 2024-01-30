@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Profile;
+use App\Models\Exercise;
 use DevKylian\Uuid\HasUuid;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -60,6 +61,21 @@ class User extends Authenticatable
 
     public function profile()
     {
-        return $this->belongsTo(Profile::class, 'profile_id');
+        return $this->hasOne(Profile::class);
+    }
+
+    public function series()
+    {
+        return $this->hasMany(Serie::class)->latest();
+    }
+
+    public function program()
+    {
+        return $this->hasOneThrough(Program::class, Profile::class);
+    }
+
+    public function exercises()
+    {
+        return $this->belongsToMany(Exercise::class, 'user_exercises');
     }
 }
