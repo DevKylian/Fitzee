@@ -1,40 +1,13 @@
-<script setup>
-import { computed } from 'vue';
-
-const emit = defineEmits(['update:checked']);
-
-const props = defineProps({
-    checked: {
-        type: [Array, Boolean],
-        required: true,
-    },
-    value: {
-        default: null,
-    },
-});
-
-const proxyChecked = computed({
-    get() {
-        return props.checked;
-    },
-
-    set(val) {
-        emit('update:checked', val);
-    },
-});
-</script>
-
 <template>
+  <div class="checkbox">
     <input
-        type="checkbox"
-        :value="value"
-        v-model="proxyChecked"
-        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+      type="checkbox"
+      :id="inputId"
+      :name="name"
+      :checked="checked"
+      @change="toggleCheckbox"
     />
-<<<<<<< Updated upstream
-</template>
-=======
-    <label :for="inputId" @click.prevent="toggleCheckbox">{{ label }}</label>
+    <label :for="inputId">{{ label }}</label>
   </div>
 </template>
 
@@ -69,11 +42,11 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../scss/colors.scss';
-@import '../../scss/mixins.scss';
 
 .checkbox {
   display: flex;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .checkbox input[type="checkbox"] {
@@ -81,7 +54,7 @@ export default {
   width: 22px;
   height: 22px;
   border-radius: 5px;
-  @include space('right', 12px);
+  margin-right: 12px;
   border: none;
   outline: none;
   position: relative;
@@ -93,7 +66,7 @@ export default {
 }
 
 .checkbox input[type="checkbox"]:checked {
-  background: $color-bg-grey;
+  background: linear-gradient(90deg, #FFB73F 2.47%, #F91768 97.63%);
   border-radius: 5px;
 }
 
@@ -110,7 +83,7 @@ export default {
 }
 
 .checkbox label {
-  font-size: 1rem;
+  font-size: 16px;
   color: $color-grey;
 }
 
@@ -118,4 +91,3 @@ export default {
     cursor: pointer;
 }
 </style>
->>>>>>> Stashed changes

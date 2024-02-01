@@ -18,18 +18,24 @@ export default {
         return "color-gradient";
       } else if (props.color === "red") {
         return "color-red";
+      } else {
+        return "color-default";
       }
     });
 
+    const handleClick = () => {
+      console.log("Bouton cliqué !");
+    };
+
     return {
       colorClass,
+      handleClick,
     };
   },
 };
 </script>
 
 <style scoped lang="scss">
-@import '../../scss/mixins.scss';
 @import '../../scss/colors.scss';
 
 .custom-button {
@@ -38,11 +44,10 @@ export default {
   border-radius: 10px;
   padding: 12px 20px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 16px;
   transition-duration: .3s;
   color: $color-white;
   font-weight: bold;
-  @include space('top', 20px);
 }
 
 .color-gradient {
@@ -55,6 +60,6 @@ export default {
 
 .custom-button:hover {
   transition-duration: .3s;
-  opacity: .8;
+  opacity: .9;
 }
 </style>

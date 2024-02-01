@@ -1,22 +1,23 @@
 <template>
-  <div class="input__group">
-    <label class="input__label" :for="inputId" v-if="label">{{ label }}</label>
+  <div class="form__group">
+    <label class="form__label" :for="inputId" v-if="label">
+      {{ label }}
+    </label>
     <input
-      class="input__input"
-      :class="{ error: hasError }"
+      class="form__input"
       :type="type"
       :id="inputId"
       :name="name"
       :placeholder="placeholder"
       v-model="inputValue"
       @input="onInput"
+      :required="required"
     />
-    <span class="error__label" v-if="hasError">{{ errorMessage }}</span>
   </div>
 </template>
 
 <script>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 
 export default {
   props: {
@@ -25,33 +26,20 @@ export default {
     type: String,
     placeholder: String,
     value: String,
-    errors: Object,
+    required: Boolean,
   },
-  setup(props, { emit }) {
+  setup(props) {
     const inputValue = ref(props.value || '');
     const inputId = props.name;
-    const hasError = ref(false);
-    const errorMessage = ref('');
 
     const onInput = (event) => {
       inputValue.value = event.target.value;
-      emit('update:modelValue', inputValue.value);
     };
-
-    watch(
-      () => props.errors && props.errors[inputId],
-      (error) => {
-        hasError.value = !!error;
-        errorMessage.value = error || '';
-      }
-    );
 
     return {
       inputValue,
       inputId,
       onInput,
-      hasError,
-      errorMessage,
     };
   },
 };
@@ -59,7 +47,39 @@ export default {
 
 <style scoped lang="scss">
 @import '../../scss/colors.scss';
-@import '../../scss/input.scss';
-@import '../../scss/error.scss';
 
+.form__group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.form__label {
+  position: absolute;
+  top: 0;
+  font-size: 16px;
+  color: $color-white;
+  font-weight: bold;
+}
+
+.form__input {
+  max-width: 100%;
+  border-radius: 15px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.10) 100%), rgba(39, 41, 48, 0.40);
+  border: none;
+  padding: 12px 12px;
+  color: $color-grey;
+  cursor: pointer;
+  width: 100%;
+}
+
+.form__label + .form__input {
+  margin-top: 30px;
+}
+
+.form__input:hover,
+.form__input:active,
+.form__input:focus {
+  box-shadow: none;
+}
 </style>
