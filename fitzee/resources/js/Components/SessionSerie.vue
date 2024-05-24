@@ -1,7 +1,7 @@
 <template>
     <div class="exercise__exercise-card color-orange-10">
         <div class="exercise__exercise-img">
-            <img :src="imgSrc" alt="" :draggable="false" />
+            <img :src="imgSrc+'.png'" alt="" :draggable="false" />
         </div>
         <h4 class="exercise__exercise-title">{{ session.exercise.name }}</h4>
     </div>

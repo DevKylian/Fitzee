@@ -139,11 +139,11 @@ class Profile extends Model
         $goalDate = Carbon::parse($goalDate);
 
         if ($goalDate->isToday()) {
-            return 'Aujourd\'hui';
+            return 'Today';
         } elseif ($goalDate->isTomorrow()) {
-            return 'Demain';
+            return 'Tomorrow';
         } elseif ($goalDate->lt($currentDate)) {
-            return 'Déjà atteint';
+            return 'Already reached';
         } else {
             $daysRemaining = $currentDate->diffInDays($goalDate);
             return $daysRemaining . ' days';

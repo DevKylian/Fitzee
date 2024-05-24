@@ -5,8 +5,8 @@
             <div class="dashboard__actions-left">
                 <h2 class="dashboard__subtitle">Program</h2>
                 <p class="dashboard__description">
-                    Choisis les exercices que tu peux réaliser dans la salle où tu t'entraînes grâce aux sliders ci-dessous.
-                    <br>Ton programme sera créé en fonction de ces choix.
+                    Use the sliders below to choose the exercises you can do in the room you're training in.
+                    <br>Your program will be created according to these choices.
                 </p>
             </div>
             <div class="dashboard__actions-right" v-if="hasPrograms">

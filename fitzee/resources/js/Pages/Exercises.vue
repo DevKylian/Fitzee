@@ -4,11 +4,11 @@
     <div class="dashboard__section-title">
       <h2 class="dashboard__subtitle">Exercises</h2>
       <p class="dashboard__description">
-        Choisis les exercices que tu peux réaliser dans la salle où tu t'entraînes grâce aux sliders ci-dessous.
-        <br>Ton programme sera créé en fonction de ces choix.
+        Use the sliders below to choose the exercises you can do in the room you're training in.
+        <br>Your program will be created according to these choices.
       </p>
         <p class="dashboard__filters">
-            <Checkbox label="Voir mes exercises" :value="filterActive" @update:modelValue="toggleFilter" />
+            <Checkbox label="View my exercises" :value="filterActive" @update:modelValue="toggleFilter" />
         </p>
     </div>
     <div class="exercises__section">

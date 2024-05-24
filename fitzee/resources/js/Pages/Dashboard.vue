@@ -49,7 +49,7 @@ const goToPage = (page) => {
         </Modal>
         <div class="grid-four">
             <CardStats color="red" :title="daysRemainingText || 0" desc="To reach your goal" icone="target"></CardStats>
-            <CardStats color="yellow" title="4" desc="Sessions this week" icone="graph"></CardStats>
+            <CardStats color="yellow" title="2" desc="Sessions this week" icone="graph"></CardStats>
             <CardStats color="white" :title="profile.program_type_text || 0" desc="Program type" icone="zoom"></CardStats>
             <CardStats color="blue" :title="profile.weight_goal ? profile.weight_goal + ' kg' : '0 kg'" desc="Weight" icone="up"></CardStats>
         </div>
