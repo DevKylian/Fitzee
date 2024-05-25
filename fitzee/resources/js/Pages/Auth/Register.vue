@@ -111,6 +111,16 @@ const submit = async () => {
 
 // page
 
+.form {
+  flex: 1;
+  width: 70%;
+  padding: 10%;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}
+
 .page__container {
     display: flex;
     justify-content: center;

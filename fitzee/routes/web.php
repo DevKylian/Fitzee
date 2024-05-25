@@ -13,6 +13,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExercisesController;
 use App\Http\Controllers\MyProfileController;
+use App\Http\Controllers\PasswordResetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,9 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::post('/forgot', [PasswordResetController::class, 'request'])->name('request-reset-password');
+Route::post('/reset', [PasswordResetController::class, 'reset'])->name('reset-password');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/my-profile', [MyProfileController::class, 'store'])->name('my-profile');

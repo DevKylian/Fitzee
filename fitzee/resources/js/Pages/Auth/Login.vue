@@ -9,15 +9,17 @@
         </Link>
     </div>
       <form @submit.prevent="submit" class="form">
+        <Success :message="$page.props.flash.success" />
+        <Info :message="$page.props.flash.info" />
         <div class="form__head">
             <h1 class="form__title">Log In</h1>
             <p class="form__desc">Welcome back ! Please enter your details.</p>
         </div>
 
         <div class="form__form">
-            <Input type="text" label="Email" placeholder="me@fitzee.app" name="email" :value="form.email" v-model="form.email" required></Input>
+            <Input type="text" label="Email" placeholder="me@fitzee.app" name="email" :value="form.email" v-model="form.email" :errors="form.errors" required></Input>
 
-            <Input type="password" label="Password" placeholder="**************" name="password" :value="form.password" v-model="form.password" required></Input>
+            <Input type="password" label="Password" placeholder="**************" name="password" :value="form.password" v-model="form.password" :errors="form.errors" required></Input>
 
             <div class="form__checkbox">
             <Checkbox label="Remember me" name="remember" :value="form.remember" v-model:checked="form.remember" />
@@ -26,6 +28,8 @@
             <Button label="Login" color="gradient" />
         </div>
         <p class="form__signup">Don't have an account ?<Link href="/register" class="form__signup-link">Sign up</Link></p>
+        <p class="form__signup">Forgot your password ?<Link href="/forgot-password" class="form__signup-link">Reset</Link></p>
+
       </form>
     </div>
 
@@ -43,6 +47,8 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import Input from '@/Components/Input.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import Button from '@/Components/Button.vue';
+import Success from '@/Components/Success.vue';
+import Info from '@/Components/Info.vue';
 
 const form = useForm({
   email: 'admin@localhost',
@@ -105,6 +111,7 @@ const submit = async () => {
 
 .form {
   flex: 1;
+  width: 70%;
   padding: 10%;
   justify-content: center;
   display: flex;

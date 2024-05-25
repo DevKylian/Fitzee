@@ -23,9 +23,7 @@ export default {
       }
     });
 
-    const handleClick = () => {
-      console.log("Bouton cliqué !");
-    };
+    const handleClick = () => {};
 
     return {
       colorClass,
