@@ -14,12 +14,18 @@ return new class extends Migration
         Schema::create('profile', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->bigInteger('goal');
-            $table->bigInteger('age');
-            $table->bigInteger('weight');
-            $table->bigInteger('size');
-            $table->bigInteger('gym_frequentation');
-            $table->bigInteger('gym_experience');
+            $table->foreignUuid('user_id')->nullable()->constrained('users');
+
+            $table->bigInteger('gender')->nullable();
+            $table->bigInteger('goal')->nullable();
+            $table->date('goal_date')->nullable();
+            $table->bigInteger('age')->nullable();
+            $table->bigInteger('weight')->nullable();
+            $table->bigInteger('weight_goal')->nullable();
+            $table->bigInteger('size')->nullable();
+            $table->bigInteger('program_type')->nullable();
+            $table->bigInteger('gym_frequentation')->nullable();
+            $table->bigInteger('gym_experience')->nullable();
 
             $table->timestamps();
         });

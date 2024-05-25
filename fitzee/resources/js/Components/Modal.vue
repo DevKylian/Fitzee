@@ -1,98 +1,101 @@
 <script setup>
-import { computed, onMounted, onUnmounted, watch } from 'vue';
+import { defineProps } from 'vue';
 
 const props = defineProps({
-    show: {
-        type: Boolean,
-        default: false,
-    },
-    maxWidth: {
-        type: String,
-        default: '2xl',
-    },
-    closeable: {
-        type: Boolean,
-        default: true,
-    },
-});
-
-const emit = defineEmits(['close']);
-
-watch(
-    () => props.show,
-    () => {
-        if (props.show) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = null;
-        }
-    }
-);
-
-const close = () => {
-    if (props.closeable) {
-        emit('close');
-    }
-};
-
-const closeOnEscape = (e) => {
-    if (e.key === 'Escape' && props.show) {
-        close();
-    }
-};
-
-onMounted(() => document.addEventListener('keydown', closeOnEscape));
-
-onUnmounted(() => {
-    document.removeEventListener('keydown', closeOnEscape);
-    document.body.style.overflow = null;
-});
-
-const maxWidthClass = computed(() => {
-    return {
-        sm: 'sm:max-w-sm',
-        md: 'sm:max-w-md',
-        lg: 'sm:max-w-lg',
-        xl: 'sm:max-w-xl',
-        '2xl': 'sm:max-w-2xl',
-    }[props.maxWidth];
+    show: Boolean,
 });
 </script>
 
 <template>
-    <Teleport to="body">
-        <Transition leave-active-class="duration-200">
-            <div v-show="show" class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50" scroll-region>
-                <Transition
-                    enter-active-class="ease-out duration-300"
-                    enter-from-class="opacity-0"
-                    enter-to-class="opacity-100"
-                    leave-active-class="ease-in duration-200"
-                    leave-from-class="opacity-100"
-                    leave-to-class="opacity-0"
-                >
-                    <div v-show="show" class="fixed inset-0 transform transition-all" @click="close">
-                        <div class="absolute inset-0 bg-gray-500 opacity-75" />
-                    </div>
-                </Transition>
+    <Transition name="modal-fade">
+        <div v-if="props.show" class="modal-container" @click="$emit('close')">
+            <div class="modal-content" @click.stop>
+                <div class="modal-header">
+                    <h3><slot name="header">default header</slot></h3>
+                </div>
 
-                <Transition
-                    enter-active-class="ease-out duration-300"
-                    enter-from-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    enter-to-class="opacity-100 translate-y-0 sm:scale-100"
-                    leave-active-class="ease-in duration-200"
-                    leave-from-class="opacity-100 translate-y-0 sm:scale-100"
-                    leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                >
-                    <div
-                        v-show="show"
-                        class="mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto"
-                        :class="maxWidthClass"
-                    >
-                        <slot v-if="show" />
-                    </div>
-                </Transition>
+                <div class="modal-body">
+                    <slot name="body">default body</slot>
+                </div>
+
+                <div class="modal-footer">
+                    <slot name="footer">
+                        <button
+                            class="modal-default-button"
+                            @click="$emit('close')"
+                        >OK</button>
+                    </slot>
+                </div>
             </div>
-        </Transition>
-    </Teleport>
+        </div>
+    </Transition>
 </template>
+
+<style scoped lang="scss">
+@import '../../scss/mixins.scss';
+@import '../../scss/colors.scss';
+
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 9998;
+}
+
+.modal-content {
+    max-width: 550px;
+    position: relative;
+    background: rgba(39, 41, 48, 0.85);
+    border-radius: 20px;
+    padding: 30px 40px;
+    color: $color-white;
+}
+
+.modal-header h3 {
+    margin-top: 0;
+    color: $color-red;
+}
+
+.modal-body {
+    font-size: 1.125rem;
+    margin: 20px 0;
+}
+
+.modal-footer {
+    color: $color-white;
+}
+
+.modal-default-button {
+    font-size: 1.125rem;
+    float: right;
+}
+
+.modal-fade-enter-active, .modal-fade-leave-active {
+    transition: opacity 0.2s;
+}
+
+.modal-fade-enter, .modal-fade-leave-to {
+    opacity: 0;
+}
+
+.modal-enter-from {
+    opacity: 0;
+}
+
+.modal-leave-to {
+    opacity: 0;
+}
+
+.modal-enter-from .modal-content,
+.modal-leave-to .modal-content {
+    transform: scale(1.1);
+}
+</style>
