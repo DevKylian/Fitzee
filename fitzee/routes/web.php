@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\ProgramController;
-use App\Http\Controllers\RepController;
-use App\Http\Controllers\SessionController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use App\Http\Controllers\RepController;
 use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\SessionController;
+use App\Http\Controllers\ActivateController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\DashboardController;
@@ -36,6 +37,7 @@ Route::get('/', function () {
 
 Route::post('/forgot', [PasswordResetController::class, 'request'])->name('request-reset-password');
 Route::post('/reset', [PasswordResetController::class, 'reset'])->name('reset-password');
+Route::get('/activate/{token}', [ActivateController::class, 'activate'])->name('activate');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/my-profile', [MyProfileController::class, 'store'])->name('my-profile');
