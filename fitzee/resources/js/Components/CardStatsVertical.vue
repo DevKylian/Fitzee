@@ -25,6 +25,11 @@ export default {
       glute: "img/icons/glute.png",
       legs: "img/icons/legs.png",
       squat: "img/icons/squat.png",
+      pectorals: "img/icons/pectorals.png",
+      biceps: "img/icons/arms.png",
+      triceps: "img/icons/arms.png",
+      back: "img/icons/back.png",
+      shoulders: "img/icons/shoulders.png",
     };
 
     const getIcon = (icone) => {
@@ -62,6 +67,7 @@ export default {
 .card-stats {
   flex-basis: 30%;
   width: 100%;
+  min-width: 160px;
   border-radius: 30px;
   display: flex;
   flex-direction: column;
@@ -99,6 +105,7 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+  width: 36px;
 }
 
 // responsive

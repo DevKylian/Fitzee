@@ -4,6 +4,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\RepController;
+use App\Http\Controllers\LegalController;
 use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
@@ -38,6 +39,10 @@ Route::get('/', function () {
 Route::post('/forgot', [PasswordResetController::class, 'request'])->name('request-reset-password');
 Route::post('/reset', [PasswordResetController::class, 'reset'])->name('reset-password');
 Route::get('/activate/{token}', [ActivateController::class, 'activate'])->name('activate');
+
+Route::get('/terms', [LegalController::class, 'terms'])->name('terms');
+Route::get('/cookies', [LegalController::class, 'cookies'])->name('cookies');
+Route::get('/notice', [LegalController::class, 'notice'])->name('notice');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/my-profile', [MyProfileController::class, 'store'])->name('my-profile');

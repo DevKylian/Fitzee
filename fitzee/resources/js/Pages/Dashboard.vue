@@ -1,18 +1,21 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm, usePage, router, Link } from '@inertiajs/vue3';
-import CardStats from '@/Components/CardStats.vue'
-import Modal from '@/Components/Modal.vue'
-import CardStatsVertical from '@/Components/CardStatsVertical.vue'
-import LongCardStats from '@/Components/LongCardStats.vue'
+import CardStats from '@/Components/CardStats.vue';
+import Modal from '@/Components/Modal.vue';
+import Redirect from '@/Components/Redirect.vue';
+import CardStatsVertical from '@/Components/CardStatsVertical.vue';
+import LongCardStats from '@/Components/LongCardStats.vue';
 import Flicking from "@egjs/vue3-flicking";
 import "@egjs/vue3-flicking/dist/flicking.css";
-import {computed, ref, onBeforeMount} from "vue";
+import { computed, ref, onBeforeMount } from "vue";
 
 const profile = usePage().props.profile;
 const series = usePage().props.series;
 const daysRemainingText = usePage().props.daysRemainingText;
-const showModal = ref(false)
+const showModal = ref(false);
+let programs = usePage().props.programs;
+let upcomingPrograms = computed(() => programs.filter(program => program.status === 0));
 
 // Pagination setup
 const itemsPerPage = 3;
@@ -31,6 +34,53 @@ const pageCount = computed(() => {
 const goToPage = (page) => {
     if (page >= 1 && page <= pageCount.value) {
         currentPage.value = page;
+    }
+};
+
+const getProgramDetails = (title) => {
+    if (title.includes('Pectoraux') || title.includes('Epaules') || title.includes('Triceps')) {
+        return { color: 'red', icon: 'pectorals', name: 'Push' };
+    } else if (title.includes('Dos') || title.includes('Biceps')) {
+        return { color: 'blue', icon: 'back', name: 'Pull' };
+    } else if (title.includes('Jambes')) {
+        return { color: 'yellow', icon: 'legs', name: 'Legs' };
+    } else {
+        return { color: 'grey', icon: 'question', name: title };
+    }
+};
+
+const getExerciseDetails = (muscleId) => {
+    switch (muscleId) {
+        case 100:
+        case 101:
+        case 102:
+        case 103:
+            return { color: 'red', icon: 'pectorals' };
+        case 200:
+        case 201:
+        case 202:
+            return { color: 'orange', icon: 'shoulders' };
+        case 300:
+        case 301:
+        case 302:
+            return { color: 'white', icon: 'triceps' };
+        case 400:
+        case 401:
+            return { color: 'blue', icon: 'biceps' };
+        case 500:
+        case 501:
+        case 502:
+        case 503:
+        case 504:
+            return { color: 'green', icon: 'back' };
+        case 600:
+        case 601:
+        case 602:
+        case 603:
+        case 604:
+            return { color: 'yellow', icon: 'legs' };
+        default:
+            return { color: 'grey', icon: 'question' };
     }
 };
 </script>
@@ -82,12 +132,20 @@ const goToPage = (page) => {
                 </div>
                 <div class="next-exercises">
                     <Flicking :options="{ moveType: 'freeScroll', circular: true, bound: true, align: 'prev' }">
-                        <CardStatsVertical color="yellow" title="Leg press" desc="4 series of 12 reps" icone="legs" :key="1"></CardStatsVertical>
-                        <CardStatsVertical color="blue" title="Squat" desc="4 series of 12 reps" icone="squat" :key="2"></CardStatsVertical>
-                        <CardStatsVertical color="orange" title="Hip trust" desc="4 series of 12 reps" icone="glute" :key="3"></CardStatsVertical>
-                        <CardStatsVertical color="yellow" title="Leg press" desc="4 series of 12 reps" icone="legs" :key="1"></CardStatsVertical>
-                        <CardStatsVertical color="blue" title="Squat" desc="4 series of 12 reps" icone="squat" :key="2"></CardStatsVertical>
-                        <CardStatsVertical color="orange" title="Hip trust" desc="4 series of 12 reps" icone="glute" :key="3"></CardStatsVertical>
+                        <Redirect
+                            v-for="serie in series"
+                            :key="serie.id"
+                            :href="`/session/${serie.id}`"
+                            style="margin-right: 1rem;"
+                        >
+                            <CardStatsVertical
+                                :color="getExerciseDetails(serie.exercise.muscle_part).color"
+                                :title="serie.exercise.name"
+                                desc="3 series of 12 reps"
+                                :icone="getExerciseDetails(serie.exercise.muscle_part).icon"
+                                :key="1"
+                            ></CardStatsVertical>
+                        </Redirect>
                     </Flicking>
                 </div>
                 <div class="dashboard__section-title">
@@ -95,12 +153,20 @@ const goToPage = (page) => {
                 </div>
                 <div class="next-sessions">
                     <Flicking :options="{ moveType: 'freeScroll', circular: true, bound: true, align: 'prev' }">
-                        <CardStatsVertical color="yellow" title="Leg press" desc="4 series of 12 reps" icone="legs" :key="1"></CardStatsVertical>
-                        <CardStatsVertical color="blue" title="Squat" desc="4 series of 12 reps" icone="squat" :key="2"></CardStatsVertical>
-                        <CardStatsVertical color="orange" title="Hip trust" desc="4 series of 12 reps" icone="glute" :key="3"></CardStatsVertical>
-                        <CardStatsVertical color="yellow" title="Leg press" desc="4 series of 12 reps" icone="legs" :key="1"></CardStatsVertical>
-                        <CardStatsVertical color="blue" title="Squat" desc="4 series of 12 reps" icone="squat" :key="2"></CardStatsVertical>
-                        <CardStatsVertical color="orange" title="Hip trust" desc="4 series of 12 reps" icone="glute" :key="3"></CardStatsVertical>
+                        <Redirect
+                            v-for="program in upcomingPrograms"
+                            :key="program.id"
+                            :href="`/session/${program.id}`"
+                            style="margin-right: 1rem;"
+                        >
+                            <CardStatsVertical
+                                :color="getProgramDetails(program.name).color"
+                                :title="getProgramDetails(program.name).name"
+                                :desc="program.scheduled_at_formated"
+                                :icone="getProgramDetails(program.name).icon"
+                                :key="1"
+                            ></CardStatsVertical>
+                        </Redirect>
                     </Flicking>
                 </div>
             </div>

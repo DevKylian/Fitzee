@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Navigation from '@/Components/Navigation.vue';
+import Footer from '@/Components/Footer.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import UserDropdown from '../Components/UserDropdown.vue';
@@ -36,6 +37,7 @@ import { Link } from '@inertiajs/vue3';
             <Navigation></Navigation>
             <slot></slot>
         </div>
+        <Footer></Footer>
     </div>
 </template>
 
