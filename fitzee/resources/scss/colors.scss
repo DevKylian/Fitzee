@@ -2,5 +2,53 @@ $color-black: #000;
 $color-white: white;
 $color-grey: #8B8B8B;
 
+$color-bg: linear-gradient(242.74deg, #39292F -27.63%, #1D151A 18.72%, #16171B 74.35%, #141526 109.29%), #111317;
+$color-bg-grey: rgba(56, 57, 61, 0.95);
 $color-red: #F91768;
 $color-gradient: linear-gradient(90deg, #FFB73F 2.47%, #F91768 97.63%);
+
+$color-red-10: rgba(248, 110, 110, 0.10);
+$color-orange-10: rgba(248, 191, 110, 0.1);
+$color-green-10: rgb(101, 242, 132, 0.1);
+$color-blue-10: rgba(110, 191, 248, 0.1);
+$color-yellow-10: rgba(242, 211, 101, 0.1);
+$color-grey-10: rgba(202, 202, 202, 0.1);
+$color-black-10: rgba(0, 0, 0, 0.1);
+$color-white-10: rgba(255, 255, 255, 0.1);
+$color-brown-10: rgba(121, 84, 49, 0.1);
+
+.color-red-10 {
+background: linear-gradient(180deg, rgba(254, 183, 62, 0.00) 0%, $color-red-10 100%), rgba(39, 41, 48, 0.40);
+}
+
+.color-orange-10 {
+background: linear-gradient(180deg, rgba(254, 183, 62, 0.00) 0%, $color-orange-10 100%), rgba(39, 41, 48, 0.40);
+}
+
+.color-green-10 {
+background: linear-gradient(180deg, rgba(254, 183, 62, 0.00) 0%, $color-green-10 100%), rgba(39, 41, 48, 0.40);
+}
+
+.color-blue-10 {
+background: linear-gradient(180deg, rgba(254, 183, 62, 0.00) 0%, $color-blue-10 100%), rgba(39, 41, 48, 0.40);
+}
+
+.color-yellow-10 {
+background: linear-gradient(180deg, rgba(254, 183, 62, 0.00) 0%, $color-yellow-10 100%), rgba(39, 41, 48, 0.40);
+}
+
+.color-grey-10 {
+background: linear-gradient(180deg, rgba(254, 183, 62, 0.00) 0%, $color-grey-10 100%), rgba(39, 41, 48, 0.40);
+}
+
+.color-white-10 {
+background: linear-gradient(180deg, rgba(254, 183, 62, 0.00) 0%, $color-white-10 100%), rgba(39, 41, 48, 0.40);
+}
+
+.color-black-10 {
+background: linear-gradient(180deg, rgba(254, 183, 62, 0.00) 0%, $color-black-10 100%), rgba(39, 41, 48, 0.40);
+}
+
+.color-brown-10 {
+background: linear-gradient(180deg, rgba(254, 183, 62, 0.00) 0%, $color-brown-10 100%), rgba(39, 41, 48, 0.40);
+}

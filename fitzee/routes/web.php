@@ -1,9 +1,21 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\RepController;
+use App\Http\Controllers\LegalController;
+use App\Http\Controllers\SeriesController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\SessionController;
+use App\Http\Controllers\ActivateController;
+use App\Http\Controllers\ExerciseController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExercisesController;
+use App\Http\Controllers\MyProfileController;
+use App\Http\Controllers\PasswordResetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +27,6 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -25,14 +36,38 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::post('/forgot', [PasswordResetController::class, 'request'])->name('request-reset-password');
+Route::post('/reset', [PasswordResetController::class, 'reset'])->name('reset-password');
+Route::get('/activate/{token}', [ActivateController::class, 'activate'])->name('activate');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::get('/terms', [LegalController::class, 'terms'])->name('terms');
+Route::get('/cookies', [LegalController::class, 'cookies'])->name('cookies');
+Route::get('/notice', [LegalController::class, 'notice'])->name('notice');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/my-profile', [MyProfileController::class, 'store'])->name('my-profile');
+    Route::get('/my-profile', [MyProfileController::class, 'show'])->name('my-profile');
+    Route::get('/settings/details', [SettingsController::class, 'show'])->name('settings.details');
+    Route::get('/settings/password', [SettingsController::class, 'show'])->name('settings.password');
+    Route::post('/settings/details', [SettingsController::class, 'updateDetails'])->name('settings.updateDetails');
+    Route::post('/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.updatePassword');
+    Route::resource('/profile', ProfileController::class)->only('edit', 'update', 'destroy');
+
+    Route::middleware('profile.complete')->group(function () {
+        Route::post('/exercise/{slug}', [SeriesController::class, 'store'])->name('exercise');
+        Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
+        Route::get('/exercises', [ExercisesController::class, 'show'])->name('exercises');
+        Route::get('/program', [ProgramController::class, 'show'])->name('program');
+        Route::get('/program/generate', [ProgramController::class, 'generate'])->name('generate');
+        Route::get('/program/delete', [ProgramController::class, 'delete'])->name('delete');
+        Route::get('/session/{id}', [SessionController::class, 'show'])->name('session');
+        Route::get('/exercise/{slug}', [ExerciseController::class, 'show'])->name('exercise');
+        Route::post('/exercise/{slug}/toggle', [ExerciseController::class, 'toggleExercise'])->name('exercise.toggle');
+        Route::post('/program/{id}/toggle', [ProgramController::class, 'toggleProgram'])->name('program.toggle');
+        Route::put('/rep/{id}/edit', [RepController::class, 'edit'])->name('rep.edit');
+        Route::post('/rep/add', [RepController::class, 'store'])->name('rep.add');
+        Route::delete('/rep/{id}/destroy', [RepController::class, 'destroy'])->name('rep.destroy');
+    });
 });
 
 require __DIR__.'/auth.php';

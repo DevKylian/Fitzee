@@ -1,137 +1,181 @@
+<template>
+  <GuestLayout>
+    <Head title="Sign Up" />
+    <div class="page__container">
+      <div class="left">
+        <div class="header">
+          <Link href="/">
+            <img src="img/logo.svg" class="header__logo" alt="" />
+          </Link>
+        </div>
+        <form @submit.prevent="submit" class="form">
+          <div class="form__head">
+            <h1 class="form__title">Sign Up</h1>
+            <p class="form__desc">Welcome! Please enter your details.</p>
+          </div>
+
+          <div class="form__form">
+            <Input
+              v-for="field in formFields"
+              :key="field.name"
+              :label="field.label"
+              :name="field.name"
+              :type="field.type"
+              :placeholder="field.placeholder"
+              :value="form[field.name]"
+              v-model="form[field.name]"
+              :errors="form.errors"
+            />
+
+            <div class="form__checkbox">
+                <Checkbox label="I accept the term of use" name="terms" v-model:checked="form.terms" />
+                <span v-if="form.errors.terms" class="error__label">{{ form.errors.terms }}</span>
+            </div>
+
+            <Button label="Register" color="gradient" />
+          </div>
+          <p class="form__signup">Already have an account ?<Link href="/login" class="form__signup-link">Log in</Link></p>
+        </form>
+      </div>
+
+      <div class="right">
+        <img src="img/auth/dashboard.png" alt="" class="right__img" />
+      </div>
+    </div>
+  </GuestLayout>
+</template>
+
 <script setup>
+import { ref } from 'vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import Input from '@/Components/Input.vue';
+import Checkbox from '@/Components/Checkbox.vue';
+import Button from '@/Components/Button.vue';
 
 const form = useForm({
-    first_name: '',
-    last_name: '',
-    username: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
+  username: '',
+  email: '',
+  password: '',
+  password_confirmation: '',
+  terms: false,
+  errors: {},
 });
 
-const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
+const formFields = [
+  {
+    type: 'text',
+    label: 'Username',
+    placeholder: 'johndoe',
+    name: 'username',
+  },
+  {
+    type: 'email',
+    label: 'Email',
+    placeholder: 'john.doe@fitzee.app',
+    name: 'email',
+  },
+  {
+    type: 'password',
+    label: 'Password',
+    placeholder: '**************',
+    name: 'password',
+  },
+  {
+    type: 'password',
+    label: 'Password confirmation',
+    placeholder: '**************',
+    name: 'password_confirmation',
+  },
+];
+
+const submit = async () => {
+  try {
+    await form.post(route('register'), {
+        preserveScroll: true
     });
+    form.reset('password', 'password_confirmation');
+  } catch (errors) {
+    form.errors = errors;
+  }
 };
+
 </script>
 
-<template>
-    <GuestLayout>
-        <Head title="Register" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="first_name" value="First name" />
+<style lang="scss" scoped>
+@import '../../../scss/colors.scss';
+@import '../../../scss/mixins.scss';
+@import '../../../scss/form.scss';
+@import '../../../scss/error.scss';
 
-                <TextInput
-                    id="first_name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.first_name"
-                    required
-                    autofocus
-                    autocomplete="first_name"
-                />
+// page
 
-                <InputError class="mt-2" :message="form.errors.first_name" />
-            </div>
+.form {
+  flex: 1;
+  width: 70%;
+  padding: 10%;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}
 
-            <div>
-                <InputLabel for="last_name" value="Last name" />
+.page__container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    min-height: 100vh;
+  }
 
-                <TextInput
-                    id="last_name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.last_name"
-                    required
-                    autofocus
-                    autocomplete="last_name"
-                />
+// header
 
-                <InputError class="mt-2" :message="form.errors.last_name" />
-            </div>
+.header {
+padding: 3rem 0 0 3rem;
+}
 
-            <div>
-                <InputLabel for="username" value="Username" />
+.header__logo {
+max-width: 100px;
+}
 
-                <TextInput
-                    id="username"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.username"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
+// side
 
-                <InputError class="mt-2" :message="form.errors.username" />
-            </div>
+.right {
+    flex: 1;
+    background: linear-gradient(90deg, #FFB73F 2.47%, #F91768 97.63%);
+    background-size: cover;
+    background-position: right center;
+    position: relative;
+    overflow: hidden;
+    padding-left: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+}
 
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+.right__img {
+    max-width: 90%;
+}
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
+.left {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
 
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+// responsive
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+@include respond(desktop) {
+      .right {
+          display: none;
+      }
+  }
 
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
+@include respond(tab-port) {
+    .right {
+        display: none;
+    }
+}
 
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
-
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password_confirmation" />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <Link
-                    :href="route('login')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Already registered?
-                </Link>
-
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout>
-</template>
+</style>

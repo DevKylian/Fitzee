@@ -1,0 +1,71 @@
+// form
+
+.form__title {
+    font-size: 2rem;
+    color: $color-white;
+}
+
+.form__head {
+    width: 75%;
+    margin-bottom: 20px;
+}
+
+.form__desc {
+    font-size: 1.125rem;
+    color: $color-grey;
+}
+
+.form {
+flex: 1;
+padding: 10%;
+width: 70%;
+justify-content: center;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.form__signup {
+text-align: center;
+@include space('top', 15px);
+}
+
+.form__signup-link {
+    @include space('left', 6px);
+}
+.form__form {
+    width: 75%;
+}
+
+.form__input {
+max-width: 100%;
+border-radius: 15px;
+box-sizing: border-box;
+background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.10) 100%), rgba(39, 41, 48, 0.40);
+border: none;
+padding: 12px 10px;
+color: #A0A0A0;
+cursor: pointer;
+}
+
+.form__input:hover,
+.form__input:active,
+.form__input:focus {
+box-shadow: none;
+}
+
+// responsive
+
+@include respond(tab-port) {
+    .form {
+        max-width: 100%;
+    }
+
+    .form__form {
+        width: 100%;
+    }
+
+    .form__head {
+        width: 100%;
+    }
+}
